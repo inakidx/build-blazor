@@ -1,5 +1,5 @@
 #!/bin/bash
-
+function work() {
 # Tiempo de ejecución en segundos (5 minutos = 300 segundos)
 tiempo_total=300
 
@@ -22,3 +22,5 @@ while [ $contador -lt $iteraciones ]; do
 done
 
 echo "Bucle completado."
+
+}
