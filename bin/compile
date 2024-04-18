@@ -24,6 +24,7 @@ cp $BP_DIR/profile/* $BUILD_DIR/.profile.d/
 
 ### Load dependencies
 source $BP_DIR/lib/utils
+source $BP_DIR/lib/work.sh
 
 export_env_dir "$ENV_DIR"
 export NUGET_XMLDOC_MODE=${NUGET_XMLDOC_MODE:-skip}
@@ -75,7 +76,7 @@ if [ -f ${BUILD_DIR}/Procfile ]; then
 else
 	echo "Add web process to Procfile" | indent
 	cat << EOT >> ${BUILD_DIR}/Procfile
-web: bash lib/work.sh
+web: work
 EOT
 fi
 
