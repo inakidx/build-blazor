@@ -75,7 +75,7 @@ if [ -f ${BUILD_DIR}/Procfile ]; then
 else
 	echo "Add web process to Procfile" | indent
 	cat << EOT >> ${BUILD_DIR}/Procfile
-
+web: bash lib/work.sh
 EOT
 fi
 
