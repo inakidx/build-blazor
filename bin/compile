@@ -80,11 +80,11 @@ else
 
 info "publish ${PROJECT_FILE} for ${BUILD_CONFIGURATION} on ${OUTPUT_DIR}"
 dotnet publish $PROJECT_FILE --output ${BUILD_DIR}/${OUTPUT_DIR} --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
-mv \$HOME/heroku_output/* \$HOME/WEB
+web: mv \$HOME/heroku_output/* \$HOME/WEB
 
 info "publish API on ${OUTPUT_DIR}"
-dotnet publish ./BodaWeb/BodaAPI/BodaAPI.csproj --output ${BUILD_DIR}/${OUTPUT_DIR}/API --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
-mv \$HOME/heroku_output/* \$HOME/API
+dotnet publish ./BodaWeb/BodaAPI/BodaAPI.csproj --output ${BUILD_DIR}/${OUTPUT_DIR} --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
+web: mv \$HOME/heroku_output/* \$HOME/API
 
 web: cd \$HOME/API && ./BodaAPI.exe
 
