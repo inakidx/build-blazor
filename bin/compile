@@ -57,7 +57,7 @@ info "publish BACK for ${BUILD_CONFIGURATION} on ${OUTPUT_DIR}"
 dotnet publish BodaAPI/BodaAPI.csproj --output ${BUILD_DIR}/${OUTPUT_DIR} --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
 
 info "publish FRONT for ${BUILD_CONFIGURATION} on ${OUTPUT_DIR}"
-dotnet publish BlazorApp2/BlazorApp2.csproj --output ${BUILD_DIR}/${OUTPUT_DIR}/Web --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
+dotnet publish BlazorApp2/BlazorApp2.csproj --output ${BUILD_DIR}/${OUTPUT_DIR}/wwwroot --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
 
 echo "Add web process to Procfile" | indent
 	cat << EOT >> ${BUILD_DIR}/Procfile
