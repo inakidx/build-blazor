@@ -79,12 +79,12 @@ else
 
 
 info "publish ${PROJECT_FILE} for ${BUILD_CONFIGURATION} on ${OUTPUT_DIR}"
-dotnet publish $PROJECT_FILE --output ${BUILD_DIR}/${OUTPUT_DIR} --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
+dotnet publish $PROJECT_FILE --output ${BUILD_DIR}/${OUTPUT_DIR}/WEB --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
 
 info "publish API on ${OUTPUT_DIR}"
 dotnet publish ./BodaWeb/BodaAPI/BodaAPI.csproj --output ${BUILD_DIR}/${OUTPUT_DIR}/API --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
 
-web: cd \$HOME/heroku_output/API && ./${PROJECT_NAME}
+web: cd \$HOME/heroku_output/API && ./BodaAPI.exe
 
 EOT
 fi
