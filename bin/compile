@@ -65,7 +65,7 @@ if [ -f ${BUILD_DIR}/Procfile ]; then
 else
 	echo "Add web process to Procfile" | indent
 	cat << EOT >> ${BUILD_DIR}/Procfile
-web: cd \$HOME/heroku_output && ./BodaAPI
+web: cd \$HOME/heroku_output && ./API/BodaAPI
 EOT
 fi
 
