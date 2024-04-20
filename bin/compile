@@ -45,29 +45,19 @@ if [ -f ${BUILD_DIR}/dotnet-tools.json ] || [ -f ${BUILD_DIR}/.config/dotnet-too
 	dotnet tool restore
 fi
 
-if [ -z ${PROJECT_FILE:-} ]; then
-	PROJECT_FILE=$(x=$(dirname $(find ${BUILD_DIR} -maxdepth 5 -iname Startup.cs -o -iname Program.cs -o -iname Program.fs | head -1)); while [[ "$x" =~ $BUILD_DIR ]] ; do find "$x" -maxdepth 1 -name *.fsproj -o -name *.csproj; x=`dirname "$x"`; done)
-fi
 
 topic "Project File"
-info $PROJECT_FILE
 
-if [ -z ${PROJECT_NAME:-} ]; then
-	PROJECT_NAME=$(basename ${PROJECT_FILE%.*})
-fi
 
 topic "Project Name"
-info $PROJECT_NAME
 
-if [ -n "$(cat $PROJECT_FILE | grep 'netcoreapp2.0')" ]; then
-	topic "WARNING"
-	info "For netcoreapp2.0 use https://github.com/jincod/dotnetcore-buildpack#v2.1.200" | indent
-	info "More info https://github.com/jincod/dotnetcore-buildpack/issues/44" | indent
-fi
 export NUGET_PACKAGES="${CACHE_DIR}/nuget/cache"
 
-info "publish ${PROJECT_FILE} for ${BUILD_CONFIGURATION} on ${OUTPUT_DIR}"
-dotnet publish $PROJECT_FILE --output ${BUILD_DIR}/${OUTPUT_DIR} --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
+info "publish FRONT for ${BUILD_CONFIGURATION} on ${OUTPUT_DIR}"
+dotnet publish BlazorApp2/BlazorApp2.csproj --output ${BUILD_DIR}/${OUTPUT_DIR}/FRONT --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
+
+info "publish BACK for ${BUILD_CONFIGURATION} on ${OUTPUT_DIR}"
+dotnet publish BodaAPI/BodaAPI.csproj --output ${BUILD_DIR}/${OUTPUT_DIR}/API --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
 
 if [ -f ${BUILD_DIR}/Procfile ]; then
 	topic "WARNING"
@@ -75,11 +65,11 @@ if [ -f ${BUILD_DIR}/Procfile ]; then
 else
 	echo "Add web process to Procfile" | indent
 	cat << EOT >> ${BUILD_DIR}/Procfile
-web: cd \$HOME/heroku_output && ./${PROJECT_NAME}
+web: cd \$HOME/heroku_output && ./BodaAPI
 EOT
 fi
 
 if [ -n ${HEROKUISH:-""} ]; then
 	echo "Override Procfile for herokuish" | indent
-	echo "web: \$HOME/heroku_output/${PROJECT_NAME}" > ${BUILD_DIR}/Procfile
+	echo "web: \$HOME/heroku_output/BodaAPI" > ${BUILD_DIR}/Procfile
 fi
