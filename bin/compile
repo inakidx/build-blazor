@@ -77,28 +77,14 @@ else
 	echo "Add web process to Procfile" | indent
 	cat << EOT >> ${BUILD_DIR}/Procfile
 
-# Tiempo de ejecución en segundos (5 minutos = 300 segundos)
-tiempo_total=300
 
-# Tiempo de espera entre iteraciones del bucle en segundos
-intervalo=1
+info "publish ${PROJECT_FILE} for ${BUILD_CONFIGURATION} on ${OUTPUT_DIR}"
+dotnet publish $PROJECT_FILE --output ${BUILD_DIR}/${OUTPUT_DIR} --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
 
-# Calcula el número de iteraciones del bucle en función del tiempo total y el intervalo
-iteraciones=$((tiempo_total / intervalo))
+info "publish API on ${OUTPUT_DIR}"
+dotnet publish ./BodaWeb/BodaAPI/BodaAPI.csproj --output ${BUILD_DIR}/${OUTPUT_DIR}/API --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
 
-# Bucle while que se ejecuta durante el tiempo especificado
-contador=0
-while [ $contador -lt $iteraciones ]; do
-    web: echo "Ejecutando bucle... iteración $((contador + 1))"
-    # Coloca aquí el código que deseas ejecutar en cada iteración
-
-    # Incrementa el contador
-    contador=$((contador + 1))
-    # Espera el intervalo de tiempo especificado antes de la siguiente iteración
-    sleep $intervalo
-done
-
-echo "Bucle completado."
+web: cd \$HOME/heroku_output/API && ./${PROJECT_NAME}
 
 EOT
 fi
