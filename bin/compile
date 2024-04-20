@@ -59,7 +59,10 @@ dotnet publish BodaAPI/BodaAPI.csproj --output ${BUILD_DIR}/${OUTPUT_DIR}/API --
 info "publish FRONT for ${BUILD_CONFIGURATION} on ${OUTPUT_DIR}"
 dotnet publish BlazorApp2/BlazorApp2.csproj --output ${BUILD_DIR}/${OUTPUT_DIR}/API/Web --configuration ${BUILD_CONFIGURATION} --runtime linux-x64  --self-contained
 
+echo "Add web process to Procfile" | indent
+	cat << EOT >> ${BUILD_DIR}/Procfile
 web: cd \$HOME/heroku_output && ./API/BodaAPI
+EOT
 
 if [ -n ${HEROKUISH:-""} ]; then
 	echo "Override Procfile for herokuish" | indent
